@@ -1,0 +1,44 @@
+﻿# Dependency directories
+node_modules/
+
+# Environment variables
+.env
+
+# Build outputs
+dist/
+.angular/
+
+# IDE files
+.vscode/
+.idea/
+.vs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+
+# --- Angular Specific ---
+.angular/
+dist/
+tmp/
+out-tsc/
+bazel-out/
+
+# Kierunki kompilacji i cache
+.cache/
+.sass-cache/
+
+# Logi błędów
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testy i raporty
+/coverage
+/e2e/dist
+/e2e/screenshots
+chrome_debug.log
+
+# Środowisko (Bardzo ważne!)
+src/environments/environment.prod.ts
