@@ -1,6 +1,7 @@
 ﻿import express from 'express';
 import { config } from './config';
 import eventRoutes from './routes/event.routes';
+import authRoutes from './routes/auth.routes';
 import { EventController } from './controllers/event.controller';
 import mongoose from 'mongoose';
 
@@ -22,6 +23,7 @@ class App {
     private initializeRoutes() {
         
         this.app.use('/api/events', eventRoutes);
+        this.app.use('/api/auth', authRoutes);
 
         
         this.app.use((req, res) => {
