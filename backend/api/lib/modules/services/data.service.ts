@@ -19,7 +19,7 @@ export class DataService {
         return await EventModel.findById(id).exec();
     }
 
-    public async joinEvent(eventId: string, userId: number): Promise<IEventDocument | null> {
+    public async joinEvent(eventId: string, userId: string): Promise<IEventDocument | null> {
         return await EventModel.findByIdAndUpdate(
             eventId,
             { $addToSet: { participants: userId } }, 
@@ -35,7 +35,7 @@ export class DataService {
         ).exec();
     }
 
-    public async leaveEvent(eventId: string, userId: number): Promise<IEventDocument | null> {
+    public async leaveEvent(eventId: string, userId: string): Promise<IEventDocument | null> {
         return await EventModel.findByIdAndUpdate(
             eventId,
             { $pull: { participants: userId } }, // Usuwa konkretne ID z tablicy
@@ -43,7 +43,7 @@ export class DataService {
         ).exec();
     }
 
-    public async toggleLike(eventId: string, userId: number): Promise<IEventDocument | null> {
+    public async toggleLike(eventId: string, userId: string): Promise<IEventDocument | null> {
         const event = await EventModel.findById(eventId);
         if (!event) return null;
 
