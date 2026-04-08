@@ -1,101 +1,131 @@
-import { events } from '../modules/database';
+﻿import { events } from '../modules/database';
+import { Request, Response } from 'express';
+import { DataService } from '../modules/services/data.service';
 import { Event, Category } from '../interfaces/event.interface';
 
 export class EventController {
+    private dataService: DataService;
 
-    public createEvent(data: Partial<Event>, userId: number): Event {
-        const newEvent: Event = {
-            id: events.length + 1,
-            title: data.title!,
-            description: data.description!,
-            date: new Date(data.date!),
-            location: data.location!,
-            category: data.category,
-            maxParticipants: data.maxParticipants || 10,
-            participants: [],
-            likes: [],
-            creatorId: userId,
-            createdAt: new Date()
-      
-        };
-
-        events.push(newEvent);
-        return newEvent;
+    constructor() {
+        this.dataService = new DataService();
     }
 
-    public getAllEvents(filter?: { category?: Category; search?: string }): Event[] {
-        let result = [...events];
-        if (filter?.category) {
-            result = result.filter(e => e.category === filter.category);
+    public createEvent = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const userId = 1;
+            const newEvent = await this.dataService.createEvent({
+                ...req.body,
+                creatorId: userId
+            });
+            res.status(201).json(newEvent);
+        } catch (error) {
+            res.status(400).json({ error: 'Nie udało się utworzyć wydarzenia' });
         }
-        if (filter?.search) {
-            result = result.filter(e => e.title.toLowerCase().includes(filter.search!.toLowerCase()));
+    };
+
+    public getAllEvents = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const filters = {
+                category: req.query.category as Category,
+                search: req.query.search as string
+            };
+            const events = await this.dataService.getAllEvents(filters);
+            res.status(200).json(events);
+        } catch (error) {
+            res.status(500).json({ error: 'Błąd podczas pobierania wydarzeń' });
         }
-        return result;
-    }
-    public getEventById(id: number): Event | undefined {
-        return events.find(e => e.id === id);
-    }
+    };
+    public getEventById = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const event = await this.dataService.getEventById(req.params.id);
+            if (!event) {
+                res.status(404).json({ message: 'Nie znaleziono wydarzenia' });
+                return;
+            }
+            res.status(200).json(event);
+        } catch (error) {
+            res.status(500).json({ error: 'Błąd podczas pobierania szczegółów wydarzenia' });
+        }
+    };
 
-    public updateEvent(id: number, data: Partial<Event>): Event | null {
-        const index = events.findIndex(e => e.id === id);
-        if (index === -1) return null;
+    public updateEvent = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const updatedEvent = await this.dataService.updateEvent(req.params.id, req.body);
+            if (!updatedEvent) {
+                res.status(404).json({ message: 'Nie znaleziono wydarzenia do aktualizacji' });
+                return;
+            }
+            res.status(200).json(updatedEvent);
+        } catch (error) {
+            res.status(400).json({ error: 'Błąd podczas aktualizacji wydarzenia' });
+        }
+    };
 
-        events[index] = { ...events[index], ...data, id }; // Zachowujemy oryginalne ID
-        return events[index];
-    }
-
-    public deleteEvent(id: number): boolean {
-        const index = events.findIndex(e => e.id === id);
-        if (index === -1) return false;
-
-        events.splice(index, 1);
-        return true;
-    }
+    public deleteEvent = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const success = await this.dataService.deleteEvent(req.params.id);
+            if (!success) {
+                res.status(404).json({ message: 'Wydarzenie nie istnieje' });
+                return;
+            }
+            res.status(204).send();
+        } catch (error) {
+            res.status(500).json({ error: 'Błąd podczas usuwania' });
+        }
+    };
 
     
-    public joinEvent(eventId: number, userId: number): boolean {
-        const event = events.find(e => e.id === eventId);
-        if (event && !event.participants.includes(userId)) {
-            if (event.participants.length < event.maxParticipants) {
-                event.participants.push(userId);
-                return true;
+    public joinEvent = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const eventId = req.params.id; 
+            const userId = 1;
+
+            const updatedEvent = await this.dataService.joinEvent(eventId, userId);
+
+            if (!updatedEvent) {
+                res.status(404).json({ message: 'Nie znaleziono wydarzenia' });
+                return;
             }
+            res.status(200).json({ message: 'Dołączono do wydarzenia', event: updatedEvent });
+        } catch (error) {
+            res.status(500).json({ error: 'Błąd podczas dołączania' });
         }
-        return false;
-    }
-    public leaveEvent(eventId: number, userId: number): boolean {
-        const event = events.find(e => e.id === eventId);
+    };
+    public leaveEvent = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const userId = 1; // Symulacja zalogowanego użytkownika
+            const updatedEvent = await this.dataService.leaveEvent(req.params.id, userId);
 
-        if (event) {
-            const index = event.participants.indexOf(userId);
-            if (index !== -1) {
-                event.participants.splice(index, 1);
-                return true;
+            if (!updatedEvent) {
+                res.status(404).json({ message: 'Nie znaleziono wydarzenia' });
+                return;
             }
+            res.status(200).json({ message: 'Wypisano się z wydarzenia', event: updatedEvent });
+        } catch (error) {
+            res.status(500).json({ error: 'Błąd podczas rezygnacji z wydarzenia' });
         }
-        return false;
-    }
+    };
 
 
-    public toggleLike(eventId: number, userId: number): { liked: boolean, count: number } | null {
-        const event = events.find(e => e.id === eventId);
+    public toggleLike = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const eventId = req.params.id;
+            const userId = 1;
 
-        if (!event) return null;
+            const updatedEvent = await this.dataService.toggleLike(eventId, userId);
 
-        
-        if (!event.likes) event.likes = [];
+            if (!updatedEvent) {
+                res.status(404).json({ message: 'Nie znaleziono wydarzenia' });
+                return;
+            }
 
-        const index = event.likes.indexOf(userId);
-
-        if (index === -1) {
-            
-            event.likes.push(userId);
-            return { liked: true, count: event.likes.length };
-        } else {
-            
-            event.likes.splice(index, 1);
-            return { liked: false, count: event.likes.length };
+            const isLiked = updatedEvent.likes.includes(userId);
+            res.status(200).json({
+                message: isLiked ? 'Polubiono' : 'Odlubiono',
+                likesCount: updatedEvent.likes.length
+            });
+        } catch (error) {
+            res.status(500).json({ error: 'Błąd podczas zmiany polubienia' });
         }
-    }
+    };
 }
