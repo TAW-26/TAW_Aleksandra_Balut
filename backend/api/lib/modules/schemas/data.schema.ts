@@ -12,9 +12,14 @@ export const EventSchema: Schema = new Schema({
         enum: ['sport', 'gry', 'dzieci', 'spotkania'],
         required: true
     },
-    creatorId: { type: Number, required: true }, 
-    participants: [{ type: Number }], 
-    likes: [{ type: Number }]       
+    creatorId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User', // Opcjonalnie, pozwala na .populate('creatorId')
+        required: true
+    },
+
+    participants: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    likes: [{ type: Schema.Types.ObjectId, ref: 'User' }]     
 }, {
     timestamps: true
 });

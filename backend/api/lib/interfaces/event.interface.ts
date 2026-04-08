@@ -7,8 +7,8 @@ export interface Event {
     location: string;
     category: string;
     maxParticipants: number;
-    participants: number[];
-    likes: number[];
-    creatorId: number;
+    participants: string[];
+    likes: string[];
+    creatorId: string;
     createdAt: Date;
 }

@@ -9,10 +9,9 @@ export class EventController {
     constructor() {
         this.dataService = new DataService();
     }
-
     public createEvent = async (req: Request, res: Response): Promise<void> => {
         try {
-            const userId = 1;
+            const userId = (req as any).user.userId;
             const newEvent = await this.dataService.createEvent({
                 ...req.body,
                 creatorId: userId
@@ -78,7 +77,7 @@ export class EventController {
     public joinEvent = async (req: Request, res: Response): Promise<void> => {
         try {
             const eventId = req.params.id; 
-            const userId = 1;
+            const userId = (req as any).user.userId;
 
             const updatedEvent = await this.dataService.joinEvent(eventId, userId);
 
@@ -93,7 +92,7 @@ export class EventController {
     };
     public leaveEvent = async (req: Request, res: Response): Promise<void> => {
         try {
-            const userId = 1; // Symulacja zalogowanego użytkownika
+            const userId = (req as any).user.userId;
             const updatedEvent = await this.dataService.leaveEvent(req.params.id, userId);
 
             if (!updatedEvent) {
@@ -110,7 +109,7 @@ export class EventController {
     public toggleLike = async (req: Request, res: Response): Promise<void> => {
         try {
             const eventId = req.params.id;
-            const userId = 1;
+            const userId = (req as any).user.userId;
 
             const updatedEvent = await this.dataService.toggleLike(eventId, userId);
 
