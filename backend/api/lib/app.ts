@@ -1,5 +1,6 @@
 ﻿import express from 'express';
 import { config } from './config';
+import eventRoutes from './routes/event.routes';
 import { EventController } from './controllers/event.controller';
 
 class App {
@@ -11,9 +12,19 @@ class App {
     constructor() {
         this.app = express();
         this.app.use(express.json());
-        this.eventController = new EventController();
+        //this.eventController = new EventController();
+        this.initializeRoutes();
 
         this.runExample();
+    }
+    private initializeRoutes() {
+        
+        this.app.use('/api/events', eventRoutes);
+
+        
+        this.app.use((req, res) => {
+            res.status(404).json({ message: 'Endpoint nie istnieje' });
+        });
     }
 
     private runExample(): void {
