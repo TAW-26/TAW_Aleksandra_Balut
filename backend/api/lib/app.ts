@@ -2,6 +2,7 @@
 import { config } from './config';
 import eventRoutes from './routes/event.routes';
 import { EventController } from './controllers/event.controller';
+import mongoose from 'mongoose';
 
 class App {
     public app: express.Application;
@@ -14,8 +15,9 @@ class App {
         this.app.use(express.json());
         //this.eventController = new EventController();
         this.initializeRoutes();
-
-        this.runExample();
+        this.connectToDatabase();
+         
+        //this.runExample();
     }
     private initializeRoutes() {
         
@@ -27,31 +29,36 @@ class App {
         });
     }
 
-    private runExample(): void {
-        console.log('--- Uruchamiam przykład użycia ---');
+    private async connectToDatabase(): Promise<void> {
+        try {
+            await mongoose.connect(config.databaseUrl);
+            console.log('Connection with database established');
+        } catch (error) {
+            console.error('Error connecting to MongoDB:', error);
+        }
 
-        const event1 = this.eventController.createEvent({
-            title: 'Wspólne granie w Catan',
-            description: 'Zapraszam sąsiadów na planszówki!',
-            location: 'ul. Sezamkowa 4/12',
-            category: 'gry',
-            maxParticipants: 4
-        }, 99);
+        mongoose.connection.on('error', (error) => {
+            console.error('MongoDB connection error:', error);
+        });
+        mongoose.connection.on('disconnected', () => {
+            console.log('MongoDB disconnected');
+        });
 
-        console.log('Utworzono wydarzenie:', event1);
+        process.on('SIGINT', async () => {
+            await mongoose.connection.close();
+            console.log('MongoDB connection closed due to app termination');
+            process.exit(0);
+        });
 
-        this.eventController.createEvent({
-            title: 'Joga w parku',
-            category: 'sport',
-            location: 'Park Północny'
-        }, 101);
-
-        const allEvents = this.eventController.getAllEvents();
-        console.log(`Liczba wszystkich wydarzeń: ${allEvents.length}`);
-
-        const sportEvents = this.eventController.getAllEvents({ category: 'sport' });
-        console.log('Wydarzenia sportowe:', sportEvents.map(e => e.title));
+        process.on('SIGTERM', async () => {
+            await mongoose.connection.close();
+            console.log('MongoDB connection closed due to app termination');
+            process.exit(0);
+        });
     }
+
+
+    
 
     public listen(): void {
         this.app.listen(config.port, () => {
