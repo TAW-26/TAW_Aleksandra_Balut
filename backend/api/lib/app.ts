@@ -4,7 +4,7 @@ import eventRoutes from './routes/event.routes';
 import authRoutes from './routes/auth.routes';
 import { EventController } from './controllers/event.controller';
 import mongoose from 'mongoose';
-
+import cors from 'cors';
 class App {
     public app: express.Application;
     private eventController: EventController;
@@ -13,8 +13,16 @@ class App {
 
     constructor() {
         this.app = express();
-        this.app.use(express.json());
+        //this.app.use(express.json());
         //this.eventController = new EventController();
+        //this.initializeRoutes();
+        //this.connectToDatabase();
+        
+        this.app.use(cors({
+            origin: 'http://localhost:4200',
+            credentials: true
+        }));
+        this.app.use(express.json());
         this.initializeRoutes();
         this.connectToDatabase();
          

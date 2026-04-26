@@ -1,0 +1,8 @@
+<div class="activity-list">
+  <h2>Wydarzenia sąsiedzkie</h2>
+  <div class="list">
+    <app-activity-item *ngFor="let event of events()"
+                       [event]="event">
+    </app-activity-item>
+  </div>
+</div>
