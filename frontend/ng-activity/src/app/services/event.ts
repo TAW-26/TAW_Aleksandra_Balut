@@ -31,4 +31,12 @@ export class EventService {
   toggleLike(id: string) {
     return this.http.post(`${this.baseUrl}/${id}/like`, {});
   }
+
+  getFilteredEvents(params: { category?: string; search?: string; date?: string }) {
+    const query = new URLSearchParams();
+    if (params.category) query.append('category', params.category);
+    if (params.search) query.append('search', params.search);
+    if (params.date) query.append('date', params.date);
+    return this.http.get<EventModel[]>(`${this.baseUrl}?${query.toString()}`);
+  }
 }

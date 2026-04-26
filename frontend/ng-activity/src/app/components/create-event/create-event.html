@@ -1,0 +1,21 @@
+<div class="create-event-container">
+  <button class="back-btn" (click)="goBack()">← Powrót</button>
+  <h2>Utwórz nowe wydarzenie</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>Nazwa wydarzenia</label>
+    <input type="text" formControlName="title">
+    <label>Opis</label>
+    <textarea formControlName="description"></textarea>
+    <label>Data</label>
+    <input type="datetime-local" formControlName="date">
+    <label>Lokalizacja</label>
+    <input type="text" formControlName="location">
+    <label>Maksymalna liczba uczestników</label>
+    <input type="number" formControlName="maxParticipants">
+    <label>Kategoria</label>
+    <select formControlName="category">
+      <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+    </select>
+    <button type="submit" [disabled]="form.invalid">Zapisz</button>
+  </form>
+</div>

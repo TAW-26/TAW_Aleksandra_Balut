@@ -1,3 +1,19 @@
+<div class="filters">
+  <input type="text"
+         placeholder="Szukaj..."
+         [(ngModel)]="search"
+         (ngModelChange)="applyFilters()" />
+  <select [(ngModel)]="category" (ngModelChange)="applyFilters()">
+    <option value="">Wszystkie kategorie</option>
+    <option value="sport">Sport</option>
+    <option value="gry">Gry</option>
+    <option value="dzieci">Dzieci</option>
+    <option value="spotkania">Spotkania</option>
+  </select>
+  <input type="date"
+         [(ngModel)]="date"
+         (ngModelChange)="applyFilters()" />
+</div>
 <div class="activity-list">
   <h2>Wydarzenia sąsiedzkie</h2>
   <div class="list">
