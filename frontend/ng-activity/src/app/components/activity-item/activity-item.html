@@ -1,7 +1,29 @@
 <div class="activity-item">
   <app-activity-item-image imageUrl="placeholder"></app-activity-item-image>
-  <app-activity-item-text [title]="event.title"
-                          [description]="event.description"
-                          [date]="event.date">
-  </app-activity-item-text>
+  <div class="content">
+    <app-activity-item-text [title]="event()?.title ?? ''"
+                            [description]="event()?.description ?? ''"
+                            [date]="event()?.date ?? ''">
+    </app-activity-item-text>
+    <div class="details">
+      Liczba uczestników:
+      {{ event()?.participants?.length || 0 }}/{{ event()?.maxParticipants }}
+    </div>
+    <div class="actions">
+      <ng-container *ngIf="!isOwner()">
+        <!-- SERDUSZKO -->
+        <i class="fa heart-icon"
+           [ngClass]="{ 'fa-heart': isLiked(), 'fa-heart-o': !isLiked() }"
+           (click)="toggleLike($event)"
+           *ngIf="isLoggedIn()">
+        </i>
+        <!-- ZAPISZ / WYPISZ -->
+        <button class="join-btn"
+                *ngIf="isLoggedIn()"
+                (click)="(isJoined() ? leave($event) : join($event))">
+          {{ isJoined() ? 'Wypisz się' : 'Zapisz się' }}
+        </button>
+      </ng-container>
+    </div>
+  </div>
 </div>

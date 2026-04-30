@@ -1,0 +1,39 @@
+<div class="my-events">
+  <h2>Moje wydarzenia</h2>
+  <section>
+    <h3>Utworzone wydarzenia</h3>
+    <div class="list">
+      <app-activity-item *ngFor="let ev of createdEvents()"
+                         [eventInput]="ev"
+                         (updated)="refreshEvent($event)">
+      </app-activity-item>
+      <p *ngIf="createdEvents().length === 0">
+        Nie utworzyłaś/eś jeszcze żadnych wydarzeń.
+      </p>
+    </div>
+  </section>
+  <section>
+    <h3>Ulubione wydarzenia</h3>
+    <div class="list">
+      <app-activity-item *ngFor="let ev of favoriteEvents()"
+                         [eventInput]="ev"
+                         (updated)="refreshEvent($event)">
+      </app-activity-item>
+      <p *ngIf="favoriteEvents().length === 0">
+        Nie masz jeszcze ulubionych wydarzeń.
+      </p>
+    </div>
+  </section>
+  <section>
+    <h3>Wydarzenia, na które jestem zapisany</h3>
+    <div class="list">
+      <app-activity-item *ngFor="let ev of joinedEvents()"
+                         [eventInput]="ev"
+                         (updated)="refreshEvent($event)">
+      </app-activity-item>
+      <p *ngIf="joinedEvents().length === 0">
+        Nie jesteś zapisany/a na żadne wydarzenie.
+      </p>
+    </div>
+  </section>
+</div>

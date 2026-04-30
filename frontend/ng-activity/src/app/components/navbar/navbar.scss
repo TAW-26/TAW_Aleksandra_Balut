@@ -1,11 +1,11 @@
 .navbar {
   height: 60px;
   padding: 0 20px;
-  border-bottom: 1px solid #ddd;
+  background: #E9DDC8;
+  border-bottom: 1px solid #D9C7A8;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: white;
   position: relative;
 
   .logo {
@@ -16,7 +16,7 @@
 }
 
 .hamburger {
-  background: none;
+  
   border: none;
   cursor: pointer;
   display: flex;
@@ -42,8 +42,9 @@
   position: absolute;
   right: 20px;
   top: 60px;
-  background: white;
-  border: 1px solid #ddd;
+  background: #FFF9F2;
+  border: 1px solid #D9C7A8;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
   padding: 10px 20px;
   border-radius: 8px;
   display: flex;
@@ -51,12 +52,22 @@
   z-index: 1000;
 
   a {
-    text-decoration: none;
-    color: #333;
+    color: #4A2E2E;
+    font-weight: 500;
+    color: #4A2E2E;
+    font-weight: 500;
+    transition: color 0.2s ease;
     padding: 6px 0;
 
     &:hover {
-      color: #1976d2;
+      color: #B43737;
     }
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: #B43737;
+    font-weight: 500;
   }
 }

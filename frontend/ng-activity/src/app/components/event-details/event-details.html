@@ -1,0 +1,57 @@
+<div class="event-details card-shadow" *ngIf="event()">
+  <button class="back-btn" routerLink="/">← Powrót</button>
+  <h1>{{ event()?.title }}</h1>
+  <div class="meta">
+    <div class="date">
+      <strong>Data:</strong> {{ event()?.date | date:'medium' }}
+      <span class="days-left">
+        (pozostało: {{ daysLeft() }} dni)
+      </span>
+    </div>
+    <div>
+      <strong>Lokalizacja:</strong> {{ event()?.location }}
+    </div>
+    <div>
+      <strong>Kategoria:</strong> {{ event()?.category }}
+    </div>
+    <div>
+      <strong>Organizator:</strong>
+      {{ organizer()?.username }} ({{ organizer()?.email }})
+    </div>
+    <div>
+      <strong>Uczestnicy:</strong>
+      {{ event()?.participants?.length }}/{{ event()?.maxParticipants }}
+    </div>
+    <div>
+      <strong>Polubienia:</strong> {{ event()?.likes?.length }}
+    </div>
+  </div>
+  <strong>Szczegóły:</strong>
+  <p class="description">{{ event()?.description }}</p>
+  <!-- przycisk edycji dla właściciela -->
+  <button class="edit-btn"
+          *ngIf="isOwner()"
+          [routerLink]="['/event', event()?._id, 'edit']">
+    Edytuj wydarzenie
+  </button>
+  <button class="delete-btn"
+          *ngIf="isOwner()"
+          (click)="deleteEvent()">
+    Usuń wydarzenie
+  </button>
+  <div class="actions" *ngIf="!isOwner() && isLoggedIn()">
+    <!-- ZAPISZ / WYPISZ -->
+    <button class="join-btn"
+            (click)="isJoined() ? leave() : join()">
+      {{ isJoined() ? 'Wypisz się' : 'Zapisz się' }}
+    </button>
+    <!-- POLUB / ODLUB -->
+    <button class="like-btn"
+            (click)="toggleLike()">
+      <i class="fa"
+         [ngClass]="{ 'fa-heart': isLiked(), 'fa-heart-o': !isLiked() }"
+         style="color:red; font-size: 22px"></i>
+      {{ isLiked() ? 'Odlub' : 'Polub' }}
+    </button>
+  </div>
+</div>

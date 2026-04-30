@@ -1,0 +1,58 @@
+    .event-details {
+      background: #FFF9F2;
+      border-radius: 12px;
+      padding: 20px;
+
+      .meta div {
+        padding: 4px 0;
+      }
+
+      .days-left {
+        color: #B43737;
+        font-weight: 600;
+      }
+
+      .actions button {
+        background: #B43737;
+        color: white;
+        border-radius: 6px;
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: background 0.25s ease;
+
+        &:hover {
+          background: #922A2A;
+        }
+      }
+
+      .edit-btn {
+        background: #B43737;
+        color: white;
+        margin-right: 10px;
+
+        &:hover {
+          background: #922A2A;
+        }
+      }
+
+      .delete-btn {
+        background: #D9534F;
+        color: white;
+        margin-right: 10px;
+
+        &:hover {
+          background: #922A2A;
+        }
+      }
+
+      .delete-btn {
+        background: #D9534F;
+        color: white;
+
+        &:hover {
+          background: #C9302C;
+        }
+      }
+    }
+    
+  

@@ -1,1 +1,140 @@
-/* You can add global styles to this file, and also import other style files */
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #F5ECDC;
+  font-family: "Inter", sans-serif;
+  color: #4A2E2E;
+}
+
+h1, h2, h3, h4 {
+  color: #4A2E2E;
+  font-weight: 600;
+}
+input, select, textarea {
+  background: #FFF9F2;
+  border: 1px solid #D9C7A8;
+  border-radius: 6px;
+  padding: 10px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+
+  &:focus {
+    border-color: #B43737;
+    box-shadow: 0 0 6px rgba(180, 55, 55, 0.4);
+    outline: none;
+  }
+}
+button {
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.25s ease;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.edit-btn {
+  background: #B43737;
+  color: white;
+
+  &:hover {
+    background: #922A2A;
+  }
+}
+
+.delete-btn {
+  background: #D9534F;
+  color: white;
+
+  &:hover {
+    background: #C9302C;
+  }
+}
+@mixin card-shadow {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  }
+}
+.card-shadow {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  }
+}
+.edit-container,
+.create-event-container {
+  background: #FFF9F2;
+  border: 1px solid #E0D1BA;
+  border-radius: 10px;
+  @extend .card-shadow;
+
+  button[type="submit"] {
+    background: #B43737;
+    color: white;
+
+    &:hover {
+      background: #922A2A;
+    }
+  }
+}
+.participants-box {
+  background: #F5ECDC;
+  border-radius: 10px;
+}
+
+.remove-btn {
+  color: #B43737;
+  cursor: pointer;
+
+  &:hover {
+    color: #922A2A;
+  }
+}
+.pulse {
+  animation: pulseAnim 0.4s ease;
+}
+
+@keyframes pulseAnim {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+.fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.scale-hover {
+  transition: transform 0.25s ease;
+}
+
+.scale-hover:hover {
+  transform: scale(1.03);
+}

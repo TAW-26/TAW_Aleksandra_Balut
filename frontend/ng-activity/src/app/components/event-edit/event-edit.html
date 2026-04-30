@@ -1,0 +1,37 @@
+<div class="edit-container" *ngIf="event()">
+  <button class="back-btn" (click)="cancel()">← Powrót</button>
+  <h2>Edytuj wydarzenie</h2>
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>Nazwa wydarzenia</label>
+    <input type="text" formControlName="title">
+    <label>Opis</label>
+<textarea formControlName="description"></textarea>
+    <label>Data</label>
+    <input type="datetime-local" formControlName="date">
+    <label>Lokalizacja</label>
+    <input type="text" formControlName="location">
+    <label>Maksymalna liczba uczestników</label>
+    <input type="number" formControlName="maxParticipants">
+    <label>Kategoria</label>
+    <select formControlName="category">
+      <option value="sport">Sport</option>
+      <option value="gry">Gry</option>
+      <option value="dzieci">Dzieci</option>
+      <option value="spotkania">Spotkania</option>
+    </select>
+    <div class="participants-box" *ngIf="participants().length > 0">
+      <h3>Uczestnicy</h3>
+      <ul>
+        <li *ngFor="let u of participants()">
+          <span>{{ u.username }} ({{ u.email }})</span>
+          <button type="button"
+                  class="remove-btn"
+                  (click)="removeParticipant(u.id)">
+            🗑
+          </button>
+        </li>
+      </ul>
+    </div>
+    <button type="submit" [disabled]="form.invalid">Zapisz zmiany</button>
+  </form>
+</div>
