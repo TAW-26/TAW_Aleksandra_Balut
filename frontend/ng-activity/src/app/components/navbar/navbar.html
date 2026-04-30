@@ -1,0 +1,24 @@
+<nav class="navbar">
+  <div class="nav-left">
+    <img src="friendship.png" class="logo" alt="ng-activity logo">
+  </div>
+  <div class="nav-right">
+    <button class="hamburger" (click)="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="menu" *ngIf="menuOpen()">
+      <a routerLink="/">Strona główna</a>
+      <a routerLink="/event/create">Dodaj wydarzenie</a>
+      <ng-container *ngIf="!auth.isLoggedIn(); else logged">
+        <a routerLink="/login">Zaloguj</a>
+        <a routerLink="/register">Rejestracja</a>
+      </ng-container>
+      <ng-template #logged>
+        <div>Witaj, {{ auth.user()?.name }}</div>
+        <button (click)="logout()">Wyloguj</button>
+      </ng-template>
+    </div>
+  </div>
+</nav>

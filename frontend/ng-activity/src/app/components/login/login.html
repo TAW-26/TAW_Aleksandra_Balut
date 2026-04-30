@@ -1,0 +1,11 @@
+<div class="auth-container">
+  <h2>Logowanie</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>Email</label>
+    <input type="text" formControlName="email">
+    <label>Hasło</label>
+    <input type="password" formControlName="password">
+    <button type="submit" [disabled]="form.invalid">Zaloguj</button>
+    <a routerLink="/register" class="link">Nie masz konta? Zarejestruj się</a>
+  </form>
+</div>
