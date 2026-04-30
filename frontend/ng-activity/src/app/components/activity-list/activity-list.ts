@@ -4,10 +4,11 @@ import { EventService } from '../../services/event';
 import { EventModel } from '../../models/event.model';
 import { NgFor, NgIf } from '@angular/common';
 import { ActivityItemComponent } from '../activity-item/activity-item';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-activity-list',
   standalone: true,
-  imports: [NgFor, NgIf, FormsModule, ActivityItemComponent],
+  imports: [NgFor, NgIf, FormsModule, RouterModule,ActivityItemComponent],
   templateUrl: './activity-list.html',
   styleUrl: './activity-list.scss',
 })
@@ -16,7 +17,9 @@ export class ActivityListComponent {
   events = signal<EventModel[]>([]);
   search = signal('');
   category = signal('');
-  date = signal('');
+  //date = signal('');
+  dateFrom = signal('');
+  dateTo = signal('');
   constructor() {
     this.loadEvents();
   }
@@ -32,7 +35,8 @@ export class ActivityListComponent {
     this.eventService.getFilteredEvents({
       search: this.search(),
       category: this.category(),
-      date: this.date()
+      dateFrom: this.dateFrom(),
+      dateTo: this.dateTo()
     }).subscribe({
       next: (data) => this.events.set(data),
       error: (err) => console.error(err),

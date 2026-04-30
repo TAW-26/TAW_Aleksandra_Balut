@@ -1,6 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EventModel } from '../models/event.model';
+
+import { Observable } from 'rxjs';
+// ...
 @Injectable({
   providedIn: 'root',
 })
@@ -22,21 +25,36 @@ export class EventService {
   deleteEvent(id: string) {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
-  joinEvent(id: string) {
-    return this.http.post(`${this.baseUrl}/${id}/join`, {});
-  }
-  leaveEvent(id: string) {
-    return this.http.delete(`${this.baseUrl}/${id}/join`);
-  }
-  toggleLike(id: string) {
-    return this.http.post(`${this.baseUrl}/${id}/like`, {});
-  }
+joinEvent(id: string): Observable < { event: EventModel } > {
+  return this.http.post<{ event: EventModel }>(
+    `${this.baseUrl}/${id}/join`,
+    {}
+  );
+}
+leaveEvent(id: string): Observable < { event: EventModel } > {
+  return this.http.delete<{ event: EventModel }>(
+    `${this.baseUrl}/${id}/join`
+  );
+}
+toggleLike(id: string): Observable < { message: string; likesCount: number } > {
+  return this.http.post<{ message: string; likesCount: number }>(
+    `${this.baseUrl}/${id}/like`,
+    {}
+  );
+}
 
-  getFilteredEvents(params: { category?: string; search?: string; date?: string }) {
+  getFilteredEvents(params: { category?: string; search?: string; dateFrom?: string; dateTo?: string }) {
     const query = new URLSearchParams();
     if (params.category) query.append('category', params.category);
     if (params.search) query.append('search', params.search);
-    if (params.date) query.append('date', params.date);
+    if (params.dateFrom) query.append('dateFrom', params.dateFrom);
+    if (params.dateTo) query.append('dateTo', params.dateTo);
     return this.http.get<EventModel[]>(`${this.baseUrl}?${query.toString()}`);
   }
+  removeParticipant(eventId: string, userId: string) {
+    return this.http.delete<{ event: EventModel }>(
+      `${this.baseUrl}/${eventId}/participants/${userId}`
+    );
+  }
+
 }

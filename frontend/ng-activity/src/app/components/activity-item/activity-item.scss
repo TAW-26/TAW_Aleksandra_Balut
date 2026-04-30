@@ -4,4 +4,74 @@
   border: 1px solid #ddd;
   padding: 12px;
   border-radius: 8px;
+  align-items: flex-start;
+
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .details {
+    font-size: 14px;
+    color: #555;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+
+    .like-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 22px;
+      padding: 0;
+
+      span {
+        color: #aaa;
+        transition: 0.2s;
+
+        &.liked {
+          color: red;
+        }
+      }
+    }
+
+    .heart-icon {
+      font-size: 22px;
+      cursor: pointer;
+      transition: 0.2s ease-in-out;
+      color: #aaa; // PUSTE SERDUSZKO - SZARE
+      &.fa-heart {
+        color: red; // PEŁNE SERDUSZKO - CZERWONE
+      }
+    }
+
+    .heart {
+      font-size: 24px;
+      color: transparent;
+      -webkit-text-stroke: 2px #aaa;
+      transition: 0.2s ease;
+
+      &.liked {
+        color: red;
+        -webkit-text-stroke: 2px red;
+      }
+    }
+
+    .join-btn {
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+
+      &:hover {
+        background: #125a9c;
+      }
+    }
+  }
 }

@@ -10,7 +10,8 @@
     </button>
     <div class="menu" *ngIf="menuOpen()">
       <a routerLink="/">Strona główna</a>
-      <a routerLink="/event/create">Dodaj wydarzenie</a>
+      <a routerLink="/event/create"  *ngIf="auth.isLoggedIn()">Dodaj wydarzenie</a>
+      <a routerLink="/my-events" *ngIf="auth.isLoggedIn()">Moje wydarzenia</a>
       <ng-container *ngIf="!auth.isLoggedIn(); else logged">
         <a routerLink="/login">Zaloguj</a>
         <a routerLink="/register">Rejestracja</a>

@@ -11,14 +11,21 @@
     <option value="spotkania">Spotkania</option>
   </select>
   <input type="date"
-         [(ngModel)]="date"
-         (ngModelChange)="applyFilters()" />
+         [(ngModel)]="dateFrom"
+         (ngModelChange)="applyFilters()"
+         placeholder="Od" />
+  <input type="date"
+         [(ngModel)]="dateTo"
+         (ngModelChange)="applyFilters()"
+         placeholder="Do" />
 </div>
 <div class="activity-list">
   <h2>Wydarzenia sąsiedzkie</h2>
   <div class="list">
-    <app-activity-item *ngFor="let event of events()"
-                       [event]="event">
-    </app-activity-item>
+    <div class="item-wrapper"
+         *ngFor="let ev of events()"
+         [routerLink]="['/event', ev._id]">
+      <app-activity-item [eventInput]="ev"></app-activity-item>
+    </div>
   </div>
 </div>
