@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "ng-activity": {
+    "ngevents": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -30,12 +30,13 @@
               }
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.css",
-              "node_modules/font-awesome/css/font-awesome.min.css",
               "src/styles.scss"
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",
+            "security": {
+              "allowedHosts": []
+            },
             "ssr": {
               "entry": "src/server.ts"
             }
@@ -59,13 +60,7 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.development.ts"
-                }
-              ]
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -74,10 +69,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ng-activity:build:production"
+              "buildTarget": "ngevents:build:production"
             },
             "development": {
-              "buildTarget": "ng-activity:build:development"
+              "buildTarget": "ngevents:build:development"
             }
           },
           "defaultConfiguration": "development"
