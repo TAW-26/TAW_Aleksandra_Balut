@@ -43,7 +43,7 @@ export class DataService {
     public async leaveEvent(eventId: string, userId: string): Promise<IEventDocument | null> {
         return await EventModel.findByIdAndUpdate(
             eventId,
-            { $pull: { participants: userId } }, // Usuwa konkretne ID z tablicy
+            { $pull: { participants: userId } }, 
             { new: true }
         ).exec();
     }

@@ -3,13 +3,13 @@ import app from "../app";
 describe("POST /api/auth/login", () => {
     it("powinno zalogować poprawnego użytkownika", async () => {
         const email = `login${Date.now()}@mail.com`;
-        // rejestracja
+        
         await request(app).post("/api/auth/register").send({
             email,
             password: "test123",
             username: "Tester"
         });
-        // logowanie
+        
         const res = await request(app).post("/api/auth/login").send({
             email,
             password: "test123"

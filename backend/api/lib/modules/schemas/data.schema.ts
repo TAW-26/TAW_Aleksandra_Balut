@@ -14,10 +14,9 @@ export const EventSchema: Schema = new Schema({
     },
     creatorId: {
         type: Schema.Types.ObjectId,
-        ref: 'User', // Opcjonalnie, pozwala na .populate('creatorId')
+        ref: 'User',
         required: true
     },
-
     participants: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     likes: [{ type: Schema.Types.ObjectId, ref: 'User' }]     
 }, {
