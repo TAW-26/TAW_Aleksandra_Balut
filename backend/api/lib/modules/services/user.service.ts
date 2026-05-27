@@ -30,4 +30,7 @@ export class UserService {
 
         return { token, user: { id: user._id, name: user.username, email: user.email } };
     }
+    public async getUserById(id: string) {
+        return await UserModel.findById(id).select('email username').exec();
+    }
 }

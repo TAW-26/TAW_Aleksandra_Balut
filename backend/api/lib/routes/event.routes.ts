@@ -12,5 +12,6 @@ router.post('/:id/join', authMiddleware, eventController.joinEvent);
 router.delete('/:id/join', authMiddleware, eventController.leaveEvent);
 router.post('/:id/like', authMiddleware, eventController.toggleLike);
 router.delete('/:id', authMiddleware, eventController.deleteEvent);
+router.delete('/:eventId/participants/:userId', authMiddleware, eventController.removeParticipant);
 
 export default router;
