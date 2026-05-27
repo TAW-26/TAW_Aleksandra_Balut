@@ -1,0 +1,146 @@
+﻿{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Wszystkie żądania HTTP",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "sum(http_requests_total)"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Błędy 4xx",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "sum(http_requests_total{status_code=~\"4..\"})"
+        }
+      ],
+      "gridPos": {
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Błędy 5xx",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "sum(http_requests_total{status_code=~\"5..\"})"
+        }
+      ],
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Aktualna liczba połączeń",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "active_connections"
+        }
+      ],
+      "gridPos": {
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      }
+    },
+    {
+      "type": "graph",
+      "title": "Żądania na sekundę (rate)",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "rate(http_requests_total[1m])"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 12,
+        "h": 8
+      }
+    },
+    {
+      "type": "graph",
+      "title": "Czas odpowiedzi p95",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_ms_bucket[1m])) by (le))"
+        }
+      ],
+      "gridPos": {
+        "x": 12,
+        "y": 4,
+        "w": 12,
+        "h": 8
+      }
+    },
+    {
+      "type": "graph",
+      "title": "Histogram czasu odpowiedzi",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "rate(http_request_duration_ms_bucket[5m])"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 24,
+        "h": 8
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Uptime aplikacji",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "time() - process_start_time_seconds"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 20,
+        "w": 6,
+        "h": 4
+      }
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 37,
+  "style": "dark",
+  "tags": [ "nodejs", "prometheus", "ng-activity" ],
+  "title": "ng-activity Monitoring",
+  "version": 1
+}

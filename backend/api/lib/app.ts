@@ -6,12 +6,11 @@ import userRoutes from './routes/user.routes';
 import { EventController } from './controllers/event.controller';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import { register } from './metrics';
+import { metricsMiddleware } from './middlewares/metricsMiddleware';
 class App {
     public app: express.Application;
     private eventController: EventController;
-
-
-
     constructor() {
         this.app = express();
         
@@ -20,15 +19,20 @@ class App {
             credentials: true
         }));
         this.app.use(express.json());
+        this.app.use(metricsMiddleware);
+        this.app.get('/metrics', async (_req, res) => {
+            res.set('Content-Type', register.contentType);
+            res.end(await register.metrics());
+        });
         this.initializeRoutes();
         this.connectToDatabase();
+        
     }
     private initializeRoutes() {
         
         this.app.use('/api/events', eventRoutes);
         this.app.use('/api/auth', authRoutes);
         this.app.use('/api/users', userRoutes); 
-
         
         this.app.use((req, res) => {
             res.status(404).json({ message: 'Endpoint nie istnieje' });
