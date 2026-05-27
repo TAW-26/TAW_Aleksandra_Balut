@@ -5,6 +5,7 @@ import { EventModel } from '../../models/event.model';
 import { NgFor, NgIf } from '@angular/common';
 import { ActivityItemComponent } from '../activity-item/activity-item';
 import { RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-activity-list',
   standalone: true,
@@ -17,7 +18,6 @@ export class ActivityListComponent {
   events = signal<EventModel[]>([]);
   search = signal('');
   category = signal('');
-  //date = signal('');
   dateFrom = signal('');
   dateTo = signal('');
   constructor() {

@@ -28,7 +28,6 @@
   </div>
   <strong>Szczegóły:</strong>
   <p class="description">{{ event()?.description }}</p>
-  <!-- przycisk edycji dla właściciela -->
   <button class="edit-btn"
           *ngIf="isOwner()"
           [routerLink]="['/event', event()?._id, 'edit']">
@@ -40,12 +39,10 @@
     Usuń wydarzenie
   </button>
   <div class="actions" *ngIf="!isOwner() && isLoggedIn()">
-    <!-- ZAPISZ / WYPISZ -->
     <button class="join-btn"
             (click)="isJoined() ? leave() : join()">
       {{ isJoined() ? 'Wypisz się' : 'Zapisz się' }}
     </button>
-    <!-- POLUB / ODLUB -->
     <button class="like-btn"
             (click)="toggleLike()">
       <i class="fa"

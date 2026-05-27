@@ -6,7 +6,6 @@ import { HttpClient } from '@angular/common/http';
 export class AuthService {
   private http = inject(HttpClient);
   private baseUrl = 'http://localhost:3100/api/auth';
-  // Sygnały do śledzenia stanu logowania
   isLoggedIn = signal(false);
   user = signal<{ id: string; name: string; email: string } | null>(null);
   login(credentials: { email: string; password: string }) {
