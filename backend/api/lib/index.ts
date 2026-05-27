@@ -1,5 +1,6 @@
-import App from './app';
+import app from "./app";
+import { config } from "./config";
+app.listen(config.port, () => {
 
-const app: App = new App();
-
-app.listen();
+    console.log(`Server running on port ${ config.port }`);
+});
