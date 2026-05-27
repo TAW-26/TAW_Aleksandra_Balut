@@ -14,7 +14,6 @@ export class UserService {
         });
         return await newUser.save();
     }
-
     public async login(email: string, password: string) {
         const user = await UserModel.findOne({ email });
         if (!user) return null;

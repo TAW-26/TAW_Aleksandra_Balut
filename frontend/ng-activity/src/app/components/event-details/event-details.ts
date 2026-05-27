@@ -45,7 +45,6 @@ export class EventDetailsComponent {
     this.eventService.getEventById(id).subscribe({
       next: (data) => {
         this.event.set(data);
-        // Pobierz dane organizatora
         this.userService.getUser(data.creatorId).subscribe({
           next: user => this.organizer.set(user),
           error: err => console.error(err)

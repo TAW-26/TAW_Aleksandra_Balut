@@ -15,13 +15,13 @@ describe("POST /api/auth/register", () => {
     });
     it("powinno zwrócić błąd dla już istniejącego emaila", async () => {
         const email = `duplicate@mail.com`;
-        // pierwsza rejestracja
+        
         await request(app).post("/api/auth/register").send({
             email,
             password: "test123",
             username: "Tester"
         });
-        // druga rejestracja — powinna paść
+
         const res = await request(app).post("/api/auth/register").send({
             email,
             password: "test123",

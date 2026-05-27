@@ -14,10 +14,6 @@ class App {
 
     constructor() {
         this.app = express();
-        //this.app.use(express.json());
-        //this.eventController = new EventController();
-        //this.initializeRoutes();
-        //this.connectToDatabase();
         
         this.app.use(cors({
             origin: 'http://localhost:4200',
@@ -26,8 +22,6 @@ class App {
         this.app.use(express.json());
         this.initializeRoutes();
         this.connectToDatabase();
-         
-        //this.runExample();
     }
     private initializeRoutes() {
         
@@ -67,10 +61,7 @@ class App {
             console.log('MongoDB connection closed due to app termination');
             process.exit(0);
         });
-    }
-
-
-    
+    }   
 
     public listen(): void {
         this.app.listen(config.port, () => {

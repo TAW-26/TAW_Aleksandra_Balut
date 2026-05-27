@@ -14,7 +14,6 @@ export class CreateEventComponent {
   fb = inject(FormBuilder);
   eventService = inject(EventService);
   router = inject(Router);
-  // literal union type
   categories = ['sport', 'gry', 'dzieci', 'spotkania'] as const;
   form = this.fb.group({
     title: ['', Validators.required],
@@ -36,7 +35,6 @@ export class CreateEventComponent {
       date: this.form.value.date ?? '',
       location: this.form.value.location ?? '',
       maxParticipants: this.form.value.maxParticipants ?? 0,
-      // 💡 ważna poprawka — literal type
       category: this.form.value.category as (typeof this.categories)[number]
     };
     this.eventService.createEvent(payload).subscribe({

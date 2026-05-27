@@ -108,12 +108,10 @@ export class EventEditComponent {
     const eventId = this.event()!._id;
     this.eventService.removeParticipant(eventId, userId).subscribe({
       next: (res) => {
-        // odśwież listę ID w evencie
         this.event.update(e => ({
           ...e!,
           participants: res.event.participants
         }));
-        // odśwież listę danych użytkowników
         this.participants.update(list =>
           list.filter(p => p.id !== userId)
         );

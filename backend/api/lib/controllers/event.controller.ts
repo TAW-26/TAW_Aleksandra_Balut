@@ -134,13 +134,11 @@ export class EventController {
             const eventId = req.params.eventId;
             const userId = req.params.userId;
             const requesterId = (req as any).user.userId;
-            // pobierz event
             const event = await this.dataService.getEventById(eventId);
             if (!event) {
                 res.status(404).json({ message: 'Wydarzenie nie istnieje' });
                 return;
             }
-            // sprawdź czy to organizator
             if (event.creatorId.toString() !== requesterId) {
                 res.status(403).json({ message: 'Brak uprawnień' });
                 return;
