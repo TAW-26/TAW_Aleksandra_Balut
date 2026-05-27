@@ -8,6 +8,9 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import { register } from './metrics';
 import { metricsMiddleware } from './middlewares/metricsMiddleware';
+import { errorLogger } from './middlewares/errorLogger';
+import { responseTimeLogger } from './middlewares/responseTimeLogger';
+
 class App {
     public app: express.Application;
     private eventController: EventController;
@@ -19,6 +22,7 @@ class App {
             credentials: true
         }));
         this.app.use(express.json());
+        this.app.use(responseTimeLogger);
         this.app.use(metricsMiddleware);
         this.app.get('/metrics', async (_req, res) => {
             res.set('Content-Type', register.contentType);
@@ -26,7 +30,7 @@ class App {
         });
         this.initializeRoutes();
         this.connectToDatabase();
-        
+        this.app.use(errorLogger);
     }
     private initializeRoutes() {
         
@@ -37,6 +41,7 @@ class App {
         this.app.use((req, res) => {
             res.status(404).json({ message: 'Endpoint nie istnieje' });
         });
+        
     }
 
     private async connectToDatabase(): Promise<void> {
