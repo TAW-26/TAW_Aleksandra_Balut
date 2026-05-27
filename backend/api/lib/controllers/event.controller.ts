@@ -26,7 +26,9 @@ export class EventController {
         try {
             const filters = {
                 category: req.query.category as Category,
-                search: req.query.search as string
+                search: req.query.search as string,
+                dateFrom: req.query.dateFrom as string,
+                dateTo: req.query.dateTo as string
             };
             const events = await this.dataService.getAllEvents(filters);
             res.status(200).json(events);
@@ -67,7 +69,7 @@ export class EventController {
                 res.status(404).json({ message: 'Wydarzenie nie istnieje' });
                 return;
             }
-            res.status(204).send();
+            res.status(200).json({ message: 'Wydarzenie usunięte' });
         } catch (error) {
             res.status(500).json({ error: 'Błąd podczas usuwania' });
         }
@@ -125,6 +127,31 @@ export class EventController {
             });
         } catch (error) {
             res.status(500).json({ error: 'Błąd podczas zmiany polubienia' });
+        }
+    };
+    public removeParticipant = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const eventId = req.params.eventId;
+            const userId = req.params.userId;
+            const requesterId = (req as any).user.userId;
+            // pobierz event
+            const event = await this.dataService.getEventById(eventId);
+            if (!event) {
+                res.status(404).json({ message: 'Wydarzenie nie istnieje' });
+                return;
+            }
+            // sprawdź czy to organizator
+            if (event.creatorId.toString() !== requesterId) {
+                res.status(403).json({ message: 'Brak uprawnień' });
+                return;
+            }
+            const updatedEvent = await this.dataService.removeParticipant(eventId, userId);
+            res.status(200).json({
+                message: 'Usunięto uczestnika',
+                event: updatedEvent
+            });
+        } catch (error) {
+            res.status(500).json({ error: 'Błąd podczas usuwania uczestnika' });
         }
     };
 }

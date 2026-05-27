@@ -2,11 +2,16 @@ import { EventModel, IEventDocument } from '../models/data.model';
 import { Event, Category } from '../../interfaces/event.interface';
 
 export class DataService {
-    public async getAllEvents(filter?: { category?: Category; search?: string }): Promise<IEventDocument[]> {
+    public async getAllEvents(filter?: { category?: Category; search?: string; dateFrom?: string; dateTo?: string }): Promise<IEventDocument[]> {
         const query: any = {};
         if (filter?.category) query.category = filter.category;
-        if (filter?.search) query.title = { $regex: filter.search, $options: 'i' }; 
-
+        if (filter?.search)
+            query.title = { $regex: filter.search, $options: 'i' };
+        if (filter?.dateFrom || filter?.dateTo) {
+            query.date = {};
+            if (filter.dateFrom) query.date.$gte = new Date(filter.dateFrom);
+            if (filter.dateTo) query.date.$lte = new Date(filter.dateTo);
+        }
         return await EventModel.find(query).exec();
     }
 
@@ -58,5 +63,12 @@ export class DataService {
     public async deleteEvent(id: string): Promise<boolean> {
         const result = await EventModel.findByIdAndDelete(id).exec();
         return result !== null;
+    }
+    public async removeParticipant(eventId: string, userId: string): Promise<IEventDocument | null> {
+        return await EventModel.findByIdAndUpdate(
+            eventId,
+            { $pull: { participants: userId } },
+            { new: true }
+        ).exec();
     }
 }

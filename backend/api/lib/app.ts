@@ -2,6 +2,7 @@
 import { config } from './config';
 import eventRoutes from './routes/event.routes';
 import authRoutes from './routes/auth.routes';
+import userRoutes from './routes/user.routes';
 import { EventController } from './controllers/event.controller';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -32,6 +33,7 @@ class App {
         
         this.app.use('/api/events', eventRoutes);
         this.app.use('/api/auth', authRoutes);
+        this.app.use('/api/users', userRoutes); 
 
         
         this.app.use((req, res) => {
@@ -76,4 +78,4 @@ class App {
         });
     }
 }
-export default App;
+export default new App().app;
