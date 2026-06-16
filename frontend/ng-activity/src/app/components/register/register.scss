@@ -1,47 +1,101 @@
+$color-bg-nav: #E9DDC8;
+$color-border: #D9C7A8;
+$color-text: #4A2E2E;
+$color-primary: #B43737;
+$color-primary-hover: #922A2A;
+$color-menu-bg: #FFF9F2;
+
 .auth-container {
   max-width: 400px;
-  margin: 30px auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background: #fff;
+  margin: 60px auto;
+  padding: 30px;
+  border: 1px solid $color-border;
+  border-radius: 14px;
+  background: $color-menu-bg;
+  box-shadow: 0 10px 30px rgba(74, 46, 46, 0.08);
 
   h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+    color: $color-text;
+    font-weight: 600;
+    letter-spacing: -0.4px;
   }
 
   form {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 16px;
+
+    label {
+      font-size: 14px;
+      font-weight: 500;
+      color: $color-text;
+      opacity: 0.85;
+      margin-bottom: -6px;
+    }
 
     input {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      padding: 12px;
+      border: 1px solid $color-border;
+      border-radius: 10px;
+      background: #ffffff;
+      font-size: 15px;
+      color: $color-text;
+      transition: all 0.2s ease;
+
+      &::placeholder {
+        color: rgba(74, 46, 46, 0.4);
+      }
 
       &:focus {
         outline: none;
-        border-color: #888;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px rgba(180, 55, 55, 0.1);
       }
     }
 
     button {
-      padding: 10px;
+      padding: 12px;
       border: none;
-      background: #1976d2;
+      background: $color-primary;
       color: white;
-      border-radius: 6px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
       cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+
+      &:hover:not(:disabled) {
+        background: $color-primary-hover;
+      }
+
+      &:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      &:disabled {
+        background: #e0d5c1;
+        color: rgba(74, 46, 46, 0.4);
+        cursor: not-allowed;
+      }
     }
 
     .link {
       text-align: center;
-      margin-top: 10px;
-      color: #1976d2;
-      cursor: pointer;
-      text-decoration: underline;
+      margin-top: 12px;
+      color: $color-text;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 8px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: rgba(180, 55, 55, 0.06);
+        color: $color-primary;
+      }
     }
   }
 }

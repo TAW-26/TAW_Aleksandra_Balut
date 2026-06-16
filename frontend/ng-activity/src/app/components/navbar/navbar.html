@@ -2,24 +2,49 @@
   <div class="nav-left">
     <img src="friendship.png" class="logo" alt="ng-activity logo">
   </div>
+
+  <div class="nav-center">
+    <a routerLink="/" class="nav-title-link">
+      <h2>Wydarzenia sąsiedzkie</h2>
+    </a>
+  </div>
+
   <div class="nav-right">
-    <button class="hamburger" (click)="toggleMenu()">
+    <div class="nav-auth-status">
+      @if (auth.isLoggedIn()) {
+      <span class="bar-welcome-text">Witaj, <strong>{{ auth.user()?.name }}</strong></span>
+      } @else {
+      <a routerLink="/login" class="btn-bar-login">Zaloguj</a>
+      }
+    </div>
+
+    <button class="hamburger" [class.open]="menuOpen()" (click)="toggleMenu()" aria-label="Menu">
       <span></span>
       <span></span>
       <span></span>
     </button>
-    <div class="menu" *ngIf="menuOpen()">
-      <a routerLink="/">Strona główna</a>
-      <a routerLink="/event/create"  *ngIf="auth.isLoggedIn()">Dodaj wydarzenie</a>
-      <a routerLink="/my-events" *ngIf="auth.isLoggedIn()">Moje wydarzenia</a>
-      <ng-container *ngIf="!auth.isLoggedIn(); else logged">
-        <a routerLink="/login">Zaloguj</a>
-        <a routerLink="/register">Rejestracja</a>
-      </ng-container>
-      <ng-template #logged>
-        <div>Witaj, {{ auth.user()?.name }}</div>
-        <button (click)="logout()">Wyloguj</button>
-      </ng-template>
+
+    @if (menuOpen()) {
+    <div class="menu">
+      @if (auth.isLoggedIn()) {
+      <div class="menu-profile-section">
+        <span class="welcome-text-mobile">Zalogowano jako:</span>
+        <span class="user-name-mobile">{{ auth.user()?.name }}</span>
+      </div>
+      <div class="menu-divider"></div>
+
+      <a routerLink="/" (click)="toggleMenu()">Strona główna</a>
+      <a routerLink="/event/create" (click)="toggleMenu()">Dodaj wydarzenie</a>
+      <a routerLink="/my-events" (click)="toggleMenu()">Moje wydarzenia</a>
+
+      <div class="menu-divider"></div>
+      <button class="btn-logout" (click)="logout(); toggleMenu()">Wyloguj</button>
+      } @else {
+      <a routerLink="/" (click)="toggleMenu()">Strona główna</a>
+      <a routerLink="/login" (click)="toggleMenu()">Zaloguj</a>
+      <a routerLink="/register" (click)="toggleMenu()">Rejestracja</a>
+      }
     </div>
+    }
   </div>
 </nav>

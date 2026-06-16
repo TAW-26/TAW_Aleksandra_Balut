@@ -6,6 +6,8 @@ import { RegisterComponent } from './components/register/register';
 import { MyEventsComponent } from './components/my-events/my-events';
 import { EventDetailsComponent } from './components/event-details/event-details';
 import { EventEditComponent } from './components/event-edit/event-edit';
+import { EventMapComponent } from './components/event-map/event-map';
+
 export const routes: Routes = [
   {
     path: '',
@@ -19,5 +21,8 @@ export const routes: Routes = [
   },
   { path: 'event/:id', component: EventDetailsComponent },
   { path: 'event/:id/edit', component: EventEditComponent },
-  { path: 'my-events', component: MyEventsComponent }
+  { path: 'my-events', component: MyEventsComponent },
+  {
+    path: 'events/map', component: EventMapComponent
+  }
 ];

@@ -1,0 +1,225 @@
+@import url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
+
+$color-bg-card: #FFF9F2;
+$color-border: #D9C7A8;
+$color-text: #4A2E2E;
+$color-primary: #B43737;
+$color-primary-hover: #922A2A;
+
+.page-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.map-page-card {
+  background: $color-bg-card;
+  border: 1px solid $color-border;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(74, 46, 46, 0.08);
+  font-family: sans-serif;
+}
+
+.map-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  h2 {
+    margin: 0;
+    color: $color-text;
+    font-size: 22px;
+    font-weight: 700;
+  }
+}
+
+/* ROZBUDOWANY PANEL FILTRÓW */
+.map-filters-bar {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  background: rgba(217, 199, 168, 0.15);
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(217, 199, 168, 0.4);
+  align-items: center;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .search-box {
+    position: relative;
+    flex: 1;
+    min-width: 150px;
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7A6262;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      background: #ffffff;
+      color: $color-text;
+      padding: 10px 14px 10px 38px;
+      border: 1px solid $color-border;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+
+      &:focus {
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px rgba(180, 55, 55, 0.12);
+      }
+    }
+  }
+
+  .category-box {
+    width: 180px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+
+    select {
+      width: 100%;
+      background: #ffffff;
+      color: $color-text;
+      padding: 10px 14px;
+      border: 1px solid $color-border;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A2E2E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 14px;
+      padding-right: 40px;
+      transition: all 0.2s ease;
+
+      &:focus {
+        border-color: $color-primary;
+      }
+    }
+  }
+  /* Sekcja dat */
+  .date-group {
+    display: flex;
+    gap: 8px;
+    width: 280px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+
+    input[type="date"] {
+      flex: 1;
+      background: #ffffff;
+      color: $color-text;
+      padding: 9px 12px;
+      border: 1px solid $color-border;
+      border-radius: 8px;
+      font-size: 13.5px;
+      outline: none;
+      font-family: sans-serif;
+      transition: all 0.2s ease;
+
+      &:focus {
+        border-color: $color-primary;
+      }
+    }
+  }
+}
+
+.back-btn {
+  background: transparent;
+  border: 1px solid rgba(74, 46, 46, 0.3);
+  color: $color-text;
+  padding: 8px 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+
+  &:hover {
+    background: $color-text;
+    color: $color-bg-card;
+    border-color: $color-text;
+  }
+}
+
+.full-map-container {
+  height: 500px;
+  width: 100%;
+  border: 1px solid $color-border;
+  border-radius: 12px;
+  z-index: 1;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+}
+
+::ng-deep {
+  .leaflet-popup-content-wrapper {
+    background: $color-bg-card !important;
+    border: 1px solid $color-border;
+    border-radius: 10px;
+  }
+
+  .map-popup-card {
+    padding: 4px;
+    color: $color-text;
+
+    h4 {
+      margin: 0 0 6px 0;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 4px 0;
+      font-size: 12.5px;
+      color: #7A6262;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .popup-go-btn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 6px;
+      background: $color-primary;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover {
+        background: $color-primary-hover;
+      }
+    }
+  }
+}

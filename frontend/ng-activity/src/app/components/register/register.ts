@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 @Component({
   standalone: true,
   selector: 'app-register',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './register.html',
   styleUrl: './register.scss'
 })
@@ -16,7 +16,7 @@ export class RegisterComponent {
   router = inject(Router);
   form = this.fb.group({
     username: ['', Validators.required],
-    email: ['', Validators.required],
+    email: ['', Validators.required, , Validators.email],
     password: ['', Validators.required]
   });
   submit() {

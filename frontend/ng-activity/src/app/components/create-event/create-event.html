@@ -1,21 +1,66 @@
-<div class="create-event-container">
-  <button class="back-btn" (click)="goBack()">← Powrót</button>
-  <h2>Utwórz nowe wydarzenie</h2>
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <label>Nazwa wydarzenia</label>
-    <input type="text" formControlName="title">
-    <label>Opis</label>
-    <textarea formControlName="description"></textarea>
-    <label>Data</label>
-    <input type="datetime-local" formControlName="date">
-    <label>Lokalizacja</label>
-    <input type="text" formControlName="location">
-    <label>Maksymalna liczba uczestników</label>
-    <input type="number" formControlName="maxParticipants">
-    <label>Kategoria</label>
-    <select formControlName="category">
-      <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
-    </select>
-    <button type="submit" [disabled]="form.invalid">Zapisz</button>
-  </form>
+<div class="page-container">
+  <div class="create-event-container card-shadow">
+
+    <button class="back-btn" (click)="goBack()">
+      <i class="fa fa-arrow-left"></i> Wróć
+    </button>
+
+    <h2>Utwórz nowe wydarzenie</h2>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-group">
+        <label>Nazwa wydarzenia</label>
+        <input type="text" formControlName="title" placeholder="np. Wspólne grillowanie">
+      </div>
+
+      <div class="form-group">
+        <label>Opis</label>
+        <textarea formControlName="description" rows="4" placeholder="Opisz krótko planowane wydarzenie..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data i godzina</label>
+          <input type="datetime-local" formControlName="date">
+        </div>
+
+        <div class="form-group">
+          <label>Maks. liczba uczestników</label>
+          <input type="number" formControlName="maxParticipants" min="1" placeholder="np. 10">
+        </div>
+      </div>
+
+      <div class="form-group location-group">
+        <label>Lokalizacja (wpisz adres lub kliknij na mapie)</label>
+        <div class="search-wrapper">
+          <input type="text"
+                 formControlName="locationName"
+                 #addressInput
+                 placeholder="np. Rynek Główny, Kraków"
+                 (keydown.enter)="$event.preventDefault(); searchAddress(addressInput.value)">
+          <button type="button" class="search-btn" (click)="searchAddress(addressInput.value)">
+            <i class="fa fa-search"></i> Szukaj
+          </button>
+        </div>
+
+        <div id="map-create" class="map-container"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Kategoria</label>
+        <select formControlName="category">
+          <option value="" disabled selected hidden>Wybierz kategorię...</option>
+
+          @for (c of categories; track c) {
+          <option [value]="c">{{ c }}</option>
+          }
+        </select>
+      </div>
+
+      <button type="submit" [disabled]="form.invalid" class="submit-btn">
+        <i class="fa fa-check"></i> Utwórz wydarzenie
+      </button>
+    </form>
+
+  </div>
 </div>

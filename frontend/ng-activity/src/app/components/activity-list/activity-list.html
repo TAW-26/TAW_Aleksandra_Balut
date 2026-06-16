@@ -1,31 +1,52 @@
-<div class="filters">
-  <input type="text"
-         placeholder="Szukaj..."
-         [(ngModel)]="search"
-         (ngModelChange)="applyFilters()" />
-  <select [(ngModel)]="category" (ngModelChange)="applyFilters()">
-    <option value="">Wszystkie kategorie</option>
-    <option value="sport">Sport</option>
-    <option value="gry">Gry</option>
-    <option value="dzieci">Dzieci</option>
-    <option value="spotkania">Spotkania</option>
-  </select>
-  <input type="date"
-         [(ngModel)]="dateFrom"
-         (ngModelChange)="applyFilters()"
-         placeholder="Od" />
-  <input type="date"
-         [(ngModel)]="dateTo"
-         (ngModelChange)="applyFilters()"
-         placeholder="Do" />
-</div>
-<div class="activity-list">
-  <h2>Wydarzenia sąsiedzkie</h2>
-  <div class="list">
-    <div class="item-wrapper"
-         *ngFor="let ev of events()"
-         [routerLink]="['/event', ev._id]">
-      <app-activity-item [eventInput]="ev"></app-activity-item>
+<div class="page-container">
+
+  <div class="filters">
+    <div class="search-box">
+      <input type="text"
+             placeholder="Szukaj..."
+             [ngModel]="search()"
+             (ngModelChange)="search.set($event); applyFilters()" />
+    </div>
+
+    <select [ngModel]="category()" (ngModelChange)="category.set($event); applyFilters()">
+      <option value="">Wszystkie kategorie</option>
+      <option value="sport">Sport</option>
+      <option value="gry">Gry</option>
+      <option value="dzieci">Dzieci</option>
+      <option value="spotkania">Spotkania</option>
+    </select>
+
+    <div class="date-group">
+      <input type="date"
+             [ngModel]="dateFrom()"
+             (ngModelChange)="dateFrom.set($event); applyFilters()"
+             placeholder="Od" />
+      <input type="date"
+             [ngModel]="dateTo()"
+             (ngModelChange)="dateTo.set($event); applyFilters()"
+             placeholder="Do" />
+    </div>
+
+    <div class="filters-container">
+      <button type="button" class="map-view-btn" routerLink="/events/map">
+        <i class="fa fa-map-o"></i> Pokaż mapę
+      </button>
     </div>
   </div>
+
+  <div class="activity-list">
+    <h2>Dostępne wydarzenia</h2>
+    <div class="list">
+      @for (ev of events(); track ev._id) {
+      <div class="item-wrapper" [routerLink]="['/event', ev._id]">
+        <app-activity-item [eventInput]="ev"></app-activity-item>
+      </div>
+      } @empty {
+      <div class="no-events">
+        <p>Nie znaleziono żadnych wydarzeń spełniających kryteria.</p>
+      </div>
+      }
+    </div>
+  </div>
+
 </div>

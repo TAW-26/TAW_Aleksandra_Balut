@@ -1,37 +1,109 @@
-<div class="edit-container" *ngIf="event()">
-  <button class="back-btn" (click)="cancel()">← Powrót</button>
-  <h2>Edytuj wydarzenie</h2>
-  <form [formGroup]="form" (ngSubmit)="save()">
-    <label>Nazwa wydarzenia</label>
-    <input type="text" formControlName="title">
-    <label>Opis</label>
-<textarea formControlName="description"></textarea>
-    <label>Data</label>
-    <input type="datetime-local" formControlName="date">
-    <label>Lokalizacja</label>
-    <input type="text" formControlName="location">
-    <label>Maksymalna liczba uczestników</label>
-    <input type="number" formControlName="maxParticipants">
-    <label>Kategoria</label>
-    <select formControlName="category">
-      <option value="sport">Sport</option>
-      <option value="gry">Gry</option>
-      <option value="dzieci">Dzieci</option>
-      <option value="spotkania">Spotkania</option>
-    </select>
-    <div class="participants-box" *ngIf="participants().length > 0">
-      <h3>Uczestnicy</h3>
+<div class="page-container">
+  <div class="edit-container card-shadow">
+
+    <button class="back-btn" (click)="cancel()">
+      <i class="fa fa-arrow-left"></i> Anuluj
+    </button>
+
+    <h2>Edytuj wydarzenie</h2>
+
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="form-group">
+        <label>Nazwa wydarzenia</label>
+        <input type="text" formControlName="title">
+      </div>
+
+      <div class="form-group">
+        <label>Opis</label>
+        <textarea formControlName="description" rows="4"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data i godzina</label>
+          <input type="datetime-local" formControlName="date">
+        </div>
+
+        <div class="form-group">
+          <label>Maks. liczba uczestników</label>
+          <input type="number" formControlName="maxParticipants">
+        </div>
+      </div>
+
+      <div class="form-group location-group">
+        <label>Lokalizacja (wpisz adres lub kliknij na mapie)</label>
+        <div class="search-wrapper">
+          <input type="text"
+                 formControlName="locationName"
+                 #addressInput
+                 placeholder="np. Rynek Główny, Kraków"
+                 (keydown.enter)="$event.preventDefault(); searchAddress(addressInput.value)">
+          <button type="button" class="search-btn" (click)="searchAddress(addressInput.value)">
+            <i class="fa fa-search"></i> Szukaj
+          </button>
+        </div>
+
+        <div id="map-edit" class="map-container"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Kategoria</label>
+        <select formControlName="category">
+          <option value="sport">Sport</option>
+          <option value="gry">Gry</option>
+          <option value="dzieci">Dzieci</option>
+          <option value="spotkania">Spotkania</option>
+        </select>
+      </div>
+
+      <button type="submit" [disabled]="form.invalid" class="submit-btn">
+        <i class="fa fa-floppy-o"></i> Zapisz zmiany
+      </button>
+    </form>
+
+    @if (participants().length > 0) {
+    <div class="participants-box">
+      <h3><i class="fa fa-users"></i> Zarządzaj uczestnikami</h3>
       <ul>
-        <li *ngFor="let u of participants()">
-          <span>{{ u.username }} ({{ u.email }})</span>
+        @for (u of participants(); track (u.id || $any(u)._id)) {
+        <li>
+          <div class="user-info">
+            <span class="username">{{ u.username }}</span>
+            <span class="email">{{ u.email }}</span>
+          </div>
           <button type="button"
                   class="remove-btn"
-                  (click)="removeParticipant(u.id)">
-            🗑
+                  title="Usuń uczestnika"
+                  (click)="removeParticipant(u.id || $any(u)._id)">
+            <i class="fa fa-trash-o"></i>
           </button>
         </li>
+        }
       </ul>
     </div>
-    <button type="submit" [disabled]="form.invalid">Zapisz zmiany</button>
-  </form>
+    }
+
+  </div>
+
+  @if (userToDelete()) {
+  <div class="modal-overlay" (click)="closeDeleteUserModal()">
+    <div class="modal-box card-shadow" (click)="$event.stopPropagation()">
+      <div class="modal-icon">
+        <i class="fa fa-exclamation-triangle"></i>
+      </div>
+      <h2>Usuwasz uczestnika</h2>
+      <p>Czy na pewno chcesz usunąć użytkownika <strong>„{{ userToDelete()?.username }}”</strong> z tego wydarzenia?</p>
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-modal-btn" (click)="closeDeleteUserModal()">
+          Anuluj
+        </button>
+        <button type="button" class="confirm-modal-btn" (click)="confirmRemoveParticipant()">
+          <i class="fa fa-trash"></i> Tak, usuń
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+
 </div>

@@ -1,76 +1,116 @@
+$color-bg-card: #FFF9F2;
+$color-border: #D9C7A8;
+$color-text: #4A2E2E;
+$color-primary: #B43737;
+$color-primary-hover: #922A2A;
+
 .activity-item {
   display: flex;
-  gap: 16px;
-  border: 1px solid #ddd;
-  padding: 12px;
-  border-radius: 8px;
+  gap: 20px;
+  background: $color-bg-card;
+  border: 1px solid $color-border;
+  padding: 16px;
+  border-radius: 12px;
   align-items: flex-start;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(74, 46, 46, 0.04);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(74, 46, 46, 0.08);
+  }
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+    gap: 12px;
+  }
 
   .content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+  }
+
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(217, 199, 168, 0.4);
+    padding-top: 12px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .details {
-    font-size: 14px;
-    color: #555;
+    font-size: 13.5px;
+    color: #7A6262;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    i {
+      color: $color-primary;
+    }
+
+    strong {
+      color: $color-text;
+      font-weight: 600;
+    }
   }
 
   .actions {
     display: flex;
-    gap: 10px;
+    align-items: center;
+    gap: 16px;
 
-    .like-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 22px;
-      padding: 0;
-
-      span {
-        color: #aaa;
-        transition: 0.2s;
-
-        &.liked {
-          color: red;
-        }
-      }
+    @media (max-width: 500px) {
+      width: 100%;
+      justify-content: space-between;
     }
 
     .heart-icon {
-      font-size: 22px;
+      font-size: 20px;
       cursor: pointer;
-      transition: 0.2s ease-in-out;
-      color: #aaa;
-      &.fa-heart {
-        color: red;
+      color: #A39090;
+      transition: transform 0.2s ease, color 0.2s ease;
+
+      &:hover {
+        transform: scale(1.15);
+        color: $color-primary;
       }
-    }
 
-    .heart {
-      font-size: 24px;
-      color: transparent;
-      -webkit-text-stroke: 2px #aaa;
-      transition: 0.2s ease;
-
-      &.liked {
-        color: red;
-        -webkit-text-stroke: 2px red;
+      &.fa-heart {
+        color: $color-primary;
       }
     }
 
     .join-btn {
-      background: #1976d2;
+      background: $color-primary;
       color: white;
       border: none;
-      border-radius: 6px;
-      padding: 6px 12px;
+      border-radius: 8px;
+      padding: 0 16px; 
+      font-size: 13px;
+      font-weight: 600;
       cursor: pointer;
+      transition: all 0.2s ease;
+      height: 36px;
+      line-height: 36px; 
 
       &:hover {
-        background: #125a9c;
+        background: $color-primary-hover;
+      }
+
+      &.joined {
+        background: transparent;
+        border: 1px solid $color-primary;
+        color: $color-primary;
+
+        &:hover {
+          background: rgba(180, 55, 55, 0.05);
+        }
       }
     }
   }

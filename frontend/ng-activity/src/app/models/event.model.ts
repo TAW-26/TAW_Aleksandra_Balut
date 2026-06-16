@@ -4,7 +4,12 @@ export interface EventModel {
   description: string;
   date: string;
   createdAt: string;
-  location: string;
+  //location: string;
+  locationName: string; 
+  location: {
+    type: 'Point';
+    coordinates: [number, number]; // [lng, lat]
+  };
   maxParticipants: number;
 
   category: 'sport' | 'gry' | 'dzieci' | 'spotkania';

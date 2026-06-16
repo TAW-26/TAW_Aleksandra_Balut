@@ -1,0 +1,46 @@
+<div class="page-container font-fix">
+  <div class="map-page-card card-shadow">
+
+    <div class="map-header">
+      <button class="back-btn" routerLink="/">
+        <i class="fa fa-arrow-left"></i> Powrót do listy
+      </button>
+      <h2>Mapa wydarzeń</h2>
+    </div>
+
+    <div class="map-filters-bar">
+      <div class="search-box">
+        <i class="fa fa-search search-icon"></i>
+        <input type="text"
+               placeholder="Szukaj..."
+               [ngModel]="searchQuery()"
+               (ngModelChange)="searchQuery.set($event); onFiltersChange()">
+      </div>
+
+      <div class="category-box">
+        <select [ngModel]="selectedCategory()"
+                (ngModelChange)="selectedCategory.set($event); onFiltersChange()">
+          <option value="">Wszystkie kategorie</option>
+          <option value="sport">Sport</option>
+          <option value="gry">Gry</option>
+          <option value="dzieci">Dzieci</option>
+          <option value="spotkania">Spotkania</option>
+        </select>
+      </div>
+
+      <div class="date-group">
+        <input type="date"
+               [ngModel]="dateFrom()"
+               (ngModelChange)="dateFrom.set($event); onFiltersChange()"
+               placeholder="Od" />
+        <input type="date"
+               [ngModel]="dateTo()"
+               (ngModelChange)="dateTo.set($event); onFiltersChange()"
+               placeholder="Do" />
+      </div>
+    </div>
+
+    <div id="all-events-map" class="full-map-container"></div>
+
+  </div>
+</div>

@@ -1,9 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { DatePipe } from '@angular/common';
-
+import { DatePipe, SlicePipe } from '@angular/common';
 @Component({
   selector: 'app-activity-item-text',
-  imports: [DatePipe],
+  imports: [DatePipe, SlicePipe],
   standalone: true,
   templateUrl: './activity-item-text.html',
   styleUrl: './activity-item-text.scss',

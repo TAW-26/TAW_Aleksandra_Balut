@@ -1,54 +1,137 @@
-<div class="event-details card-shadow" *ngIf="event()">
-  <button class="back-btn" routerLink="/">← Powrót</button>
-  <h1>{{ event()?.title }}</h1>
-  <div class="meta">
-    <div class="date">
-      <strong>Data:</strong> {{ event()?.date | date:'medium' }}
-      <span class="days-left">
-        (pozostało: {{ daysLeft() }} dni)
-      </span>
+@if (event()) {
+<div class="page-container">
+
+  <div class="event-details card-shadow">
+    <button class="back-btn" routerLink="/">
+      <i class="fa fa-arrow-left"></i> Wróć do listy
+    </button>
+
+    <div class="event-header">
+      <div class="title-area">
+        <h1>{{ event()?.title }}</h1>
+
+        @if (daysLeft() >= 0) {
+        <span class="days-left">
+          <i class="fa fa-clock-o"></i> Pozostało: {{ daysLeft() }} dni
+        </span>
+        }
+      </div>
+
+      @if (!isOwner() && isLoggedIn()) {
+      <div class="user-actions">
+        <button class="join-btn" [class.joined]="isJoined()" (click)="isJoined() ? leave() : join()">
+          <i class="fa" [ngClass]="{ 'fa-user-times': isJoined(), 'fa-user-plus': !isJoined() }"></i>
+          {{ isJoined() ? 'Wypisz się' : 'Zapisz się' }}
+        </button>
+
+        <button class="like-btn" [class.liked]="isLiked()" (click)="toggleLike()">
+          <i class="fa" [ngClass]="{ 'fa-heart': isLiked(), 'fa-heart-o': !isLiked() }"></i>
+          {{ isLiked() ? 'Polubiono' : 'Polub' }}
+        </button>
+      </div>
+      }
+
+      @if (isOwner()) {
+      <div class="owner-actions-top">
+        <button class="edit-btn" [routerLink]="['/event', event()?._id, 'edit']">
+          <i class="fa fa-pencil"></i> Edytuj
+        </button>
+        <button class="delete-btn" (click)="openDeleteModal()">
+          <i class="fa fa-trash"></i> Usuń
+        </button>
+      </div>
+      }
     </div>
-    <div>
-      <strong>Lokalizacja:</strong> {{ event()?.location }}
-    </div>
-    <div>
-      <strong>Kategoria:</strong> {{ event()?.category }}
-    </div>
-    <div>
-      <strong>Organizator:</strong>
-      {{ organizer()?.username }} ({{ organizer()?.email }})
-    </div>
-    <div>
-      <strong>Uczestnicy:</strong>
-      {{ event()?.participants?.length }}/{{ event()?.maxParticipants }}
-    </div>
-    <div>
-      <strong>Polubienia:</strong> {{ event()?.likes?.length }}
+
+    <div class="event-content-layout">
+      <div class="main-content">
+        <h3>Opis wydarzenia</h3>
+        <p class="description">{{ event()?.description }}</p>
+
+        @if (event()?.location?.coordinates) {
+        <div id="map-details" class="map-container"></div>
+        }
+      </div>
+
+      <div class="meta-sidebar">
+        <h3>Szczegóły</h3>
+
+        <div class="meta-item">
+          <i class="fa fa-calendar"></i>
+          <div>
+            <span class="label">Data i godzina</span>
+            <span class="value">{{ event()?.date | date:'medium' }}</span>
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <i class="fa fa-map-marker"></i>
+          <div>
+            <span class="label">Lokalizacja</span>
+            <span class="value">{{ event()?.locationName }}</span>
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <i class="fa fa-tag"></i>
+          <div>
+            <span class="label">Kategoria</span>
+            <span class="value-tag">{{ event()?.category }}</span>
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <i class="fa fa-user"></i>
+          <div>
+            <span class="label">Organizator</span>
+            <span class="value">
+              {{ organizer()?.username }}
+              @if (organizer()?.email) {
+              <small>({{ organizer()?.email }})</small>
+              }
+            </span>
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <i class="fa fa-users"></i>
+          <div>
+            <span class="label">Uczestnicy</span>
+            <span class="value">{{ event()?.participants?.length }} / {{ event()?.maxParticipants }}</span>
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <i class="fa fa-heart"></i>
+          <div>
+            <span class="label">Polubienia</span>
+            <span class="value">{{ event()?.likes?.length }}</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <strong>Szczegóły:</strong>
-  <p class="description">{{ event()?.description }}</p>
-  <button class="edit-btn"
-          *ngIf="isOwner()"
-          [routerLink]="['/event', event()?._id, 'edit']">
-    Edytuj wydarzenie
-  </button>
-  <button class="delete-btn"
-          *ngIf="isOwner()"
-          (click)="deleteEvent()">
-    Usuń wydarzenie
-  </button>
-  <div class="actions" *ngIf="!isOwner() && isLoggedIn()">
-    <button class="join-btn"
-            (click)="isJoined() ? leave() : join()">
-      {{ isJoined() ? 'Wypisz się' : 'Zapisz się' }}
-    </button>
-    <button class="like-btn"
-            (click)="toggleLike()">
-      <i class="fa"
-         [ngClass]="{ 'fa-heart': isLiked(), 'fa-heart-o': !isLiked() }"
-         style="color:red; font-size: 22px"></i>
-      {{ isLiked() ? 'Odlub' : 'Polub' }}
-    </button>
+
+  @if (isDeleteModalOpen()) {
+  <div class="modal-overlay" (click)="closeDeleteModal()">
+    <div class="modal-box card-shadow" (click)="$event.stopPropagation()">
+      <div class="modal-icon">
+        <i class="fa fa-exclamation-triangle"></i>
+      </div>
+      <h2>Usuwasz wydarzenie</h2>
+      <p>Czy na pewno chcesz bezpowrotnie usunąć wydarzenie <strong>„{{ event()?.title }}”</strong>? Tej operacji nie będzie można cofnąć.</p>
+
+      <div class="modal-actions">
+        <button class="cancel-modal-btn" (click)="closeDeleteModal()">
+          Anuluj
+        </button>
+        <button class="confirm-modal-btn" (click)="confirmDelete()">
+          <i class="fa fa-trash"></i> Tak, usuń
+        </button>
+      </div>
+    </div>
   </div>
+  }
+
 </div>
+}
